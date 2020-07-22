@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
     ws = new WebSocket(
-        'ws://'+ window.location.host+ '/ws/'+post_id+'/' 
+        'wss://'+ window.location.host+ '/ws/'+post_id+'/' 
     );
 
     

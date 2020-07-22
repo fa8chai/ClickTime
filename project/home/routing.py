@@ -3,5 +3,5 @@ from django.urls import re_path
 from . import consumers
 
 websocket_urlpatterns = [
-    re_path(r'^ws/(?P<post_id>[^/]+)/$', consumers.PostConsumer),
+    re_path(r'^wss/(?P<post_id>[^/]+)/$', consumers.PostConsumer),
 ]
