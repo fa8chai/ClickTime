@@ -1,0 +1,14 @@
+{% extends 'profile/index.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+ 
+{% block body %}
+<div class='container' style="margin-top: 7rem;">
+    <h4>We have sent an email with a confirmation link to your email address.
+         Please allow 5-10 minutes for this message to arrive.
+    </h4>
+    <p>You can post up to 3 posts before confirming your account.</p>
+    <a href="{% url 'index' %}" style="display: block;">My Profile</a>
+
+</div>
+{% endblock %}

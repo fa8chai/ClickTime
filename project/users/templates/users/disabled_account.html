@@ -1,0 +1,11 @@
+{% extends 'users/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+<div class="container text-white" style="margin-top: 8rem;">
+    <h5>This account is disabled <small><a href="{% url 'signin' %}" style="display: inline;"> Go Back</a></small></h5>
+    <a href="{% url 'send_activation_email' %}" class="text-white mt-4" style="display: block; text-decoration:underline">reactivate my account</a>
+
+</div>
+{% endblock %}

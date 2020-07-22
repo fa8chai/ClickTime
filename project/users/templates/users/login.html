@@ -1,0 +1,50 @@
+{% extends 'users/base.html' %}
+
+  {% block title %}{{title}}{% endblock %}
+
+  {% block body %}
+  <div class="container-fluid" style="padding-top: 6rem;">
+    <h3 style="color: white; text-align:center; margin:1rem;font-weight:unset">Welcome To ClickTime</h3>
+
+            <div style="margin: auto;" class="row">
+            
+                <div  class="col-sm-8 col-md-4 p-4"  style="margin:auto; background-color:rgba(0,0,0,0.7)" class="col-lg-4">
+                <div>
+                  <form method="POST">
+                    {% csrf_token %}
+                    
+                    {% if error %}
+                    <div class="mt-1">
+                      <p style="border-radius: 7px ;width:80%;margin:auto; margin-bottom:5px;
+                        background-color: rgb(224, 116, 104);padding:3px" class="text-white text-center" >
+                        {{ error }}
+                      </p>                    
+                      {% endif %}
+  
+                    <div style="margin-top: 3rem;" class="form-label-group">
+                      
+  
+                      <input name="email" type="text" id="inputEmail" class="form-control" placeholder="Email, username" required>
+                    </div>
+                    
+                    <div  style="margin-top: 2rem;" class="form-label-group mb-4">
+                  
+                      <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                    </div>
+    
+    
+                    
+                    <button class="btn btn-lg btn-block btn-login text-white   mb-2" type="submit" style="background-color: rgb(139, 0, 139);;">Log In</button>
+                    <div class="text-center">
+                      <div style="text-align: left; margin-top:20px; color:white">New member? <a href="{% url 'signup' %}" style="color: white; text-decoration: underline;">Sign Up</a></div>
+                      <div style="text-align: left;; color:white"><small><a href="{% url 'forget_password' %}" style="color: white;">Forgot your password?</a></small></div>
+                      
+                      
+                  </form>
+                </div>
+              </div>
+        
+          
+       
+    </div>
+  {% endblock %}

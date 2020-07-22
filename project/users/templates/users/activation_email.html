@@ -1,0 +1,27 @@
+{% extends 'users/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row" style="margin-top: 7rem;">
+        <div class="col-md-5 m-auto">
+            
+            {% if message %}
+                <p class="mb-4 text-danger text-center">{{ message }}</p>
+
+            {% elif message_true %}
+                <p class="mb-4 text-success text-center">{{ message_true }} <a href="{% url 'signin' %}" class="text-white">Go Back</a></p>
+            {% endif %}
+            <h4 class="mb-4 text-white">Enter Your Email Address:</h4>
+                
+            <form method="POST">
+                {% csrf_token %}
+                <input class="form-control" placeholder="Email" type="email" id="id_email" name="email">
+                <button class="btn btn-sm btn-dark text-white mt-4 float-right" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+    </div>
+    
+{% endblock %}

@@ -1,0 +1,54 @@
+
+    <div class="alert alert-block col-md-9" style=" margin:auto ;height:200px;padding-top:50px">
+        <h6>
+          <i class="icon-mail{% if notice.unread %}-alt{% endif %}"></i>
+            {% if notice.actor == user %}
+            <span>You</span>
+            {% else %}
+            <span style="color:rgb(139,0,139)"><a href="{% url 'get_user' notice.actor.profile.username %}" style="color:unset;">
+            {{ notice.actor.profile.username }}</a>
+            </span>
+            {% endif %}
+          {{ notice.verb }}
+          {% if notice.action_object %}
+          
+          <span class="text-dark m-auto float-right"><a href="{% url 'view_post' notice.actor.profile.username notice.action_object.id  %}" style="color: unset;">
+              <div>
+            {% if notice.action_object.images.count > 1 %}
+              <div style="background-color:rgba(0,0,0,0.5); color:white; position:relative;top:0px; right:20px ; float:right; "><i class="far fa-images" style="font-size: 15px;"></i></div>   
+              <img  src="{{ notice.action_object.images.first.image.url }}" alt="post">
+              {% else %}
+              <div style="background-color:rgba(0,0,0,0.8); color:white ; position:relative;top:0px; right:20px ; float:right; visibility: hidden; "><i class="far fa-images" style="font-size: 15px;"></i></div>   
+              <img src="{{ notice.action_object.images.last.image.url }}" alt="post">
+              {% endif %}  
+              </div>
+              {% if notice.action_object.text %}
+            {{ notice.action_object.text|slice:":10" }}
+              {% if notice.action_object.text|length > 10 %}
+              ...
+              {% endif %}
+            {% else %}
+            ...
+            {% endif %}          
+          </a>
+          </span>  
+                 
+          {% endif %}
+        </h6>
+        {% if notice.description %}
+        <p>{{ notice.description|linebreaksbr }}</p>
+        {% else %}
+        <p></p>
+        {% endif %}
+        <small class="text-muted">{{ notice.timesince }} ago</small>
+        <div class="notice-target">
+          {% if notice.target %}
+            of {{ notice.target }}
+          </span>
+          {% endif %}
+          
+        </div>
+      </div>
+      <hr>
+
+

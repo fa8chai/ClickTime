@@ -1,0 +1,154 @@
+{% extends 'profile/base.html' %}
+{% load static %}
+{% load home_extras %}
+
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block style1 %}
+    <style>
+        .post-it{
+            width: 100%;
+        }
+        .container{
+            margin-bottom: 15rem;
+            margin-top: 7rem;
+
+        }
+
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .comment * {
+            margin:unset;
+            margin-bottom: 5px;
+        }
+        .comment >a >p {
+            margin-top: 9px;
+            
+        }
+        .comment > a{
+            text-decoration: none;
+            color: rgb(139,0,139);
+            font-size: 17px;
+        }
+        .comment a:hover{
+            text-decoration: underline;
+            color: rgb(100,0,100);
+        }
+        
+        .comment{
+            border-bottom: solid rgb(204, 204, 204) 0.2px ;
+            padding:2px;
+            margin-bottom:5px ;
+        }
+        .scroll{
+            overflow: auto;
+            overflow-wrap: break-word;
+            height: 300px;
+            scroll-behavior: smooth;
+        }
+        .comment-section{
+            margin-top: 10px ;
+            background-color: rgb(245, 245, 245);
+            border-radius: 10px;
+            padding: 15px;
+            
+        }
+        .post-img{
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    {% if user.username == post.user.username %}
+        <p><a href="{% url 'delete_post' post.id %}" class="text-muted">Delete</a></p>
+        {% endif %}
+    <div class="post-container row">
+        <div class="col-md-6 carousel slide" id="carouselCo">
+            {% if post.images.count == 1 %}
+            <div class="post-active">
+                <img src="{{ post.images.first.image.url }}" style="width:100%; height:100%">
+           </div>
+            {% else %}
+            
+            <div class="carousel-inner">
+                {% for image in post.images.all %}
+                    <div class="carousel-item post-active" style="background-color: black;">
+                        <div class="numbertext" style="background-color:rgba(0,0,0,0.5);">
+                           {% get_index post image %} / {{ post.images.count }}
+                        </div>
+                        <img src="{{ image.image.url }}" style="width:100%; height:100%">
+                   </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#carouselCo" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselCo" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <h6 class="post-it pt-4"><a href="{% url 'get_user' post.user.username  %}" style="color: black; text-decoration:none">{{ post.user.username }}</a></h6>
+            <small style="display: block;" class="post-it font-italic text-muted">{{ post.created_on|date:'h:i A / d M' }}</small>
+            <div style="margin-top: 4rem;">
+            <p class="post-it" style="margin-bottom: 4rem;">{{ post.text }}</p>
+            <hr>
+            <a class="text-dark" href="{% url 'users_liked' post.user.username post.id %}"><small class="post-it likes" >{{ likes }}</small></a>
+            <button class="btn btn-sm like_btn btn-outline-danger ml-2"></button>
+
+            <small style="visibility: hidden;" class="post_id">{{ post.id }}</small>
+    
+
+            <div class="comment-section mt-4 p-4">
+                    
+                        <div class="comments scroll" id="scroll" >
+                            {% if comments %}
+                            {% for comment in comments %}
+                            <small>
+                                    <div class="comment">
+                                        <a href="{% url 'get_user' comment.user.username %}" class="row">
+                                            <img class="post-img" src="{{ comment.user.picture_url }}" alt="">
+                                            <div class="mt-auto mb-auto"><small>{{ comment.user.username }}</small></div>
+                                        </a>
+                                        <p>{{ comment.text }}</p>
+                                        <small>{{ comment.created_on|date:'h:i A d M' }}</small>
+                                    </div>
+                            </small>
+                            {% endfor %} 
+                            {% else %}
+                            <p style="text-align: center; margin:auto; margin-top:50px" class="text-muted"><small>add your comment!</small></p>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-row">
+                            <input id="username" type="text" class="form-control form-control-sm text-muted" style="width: auto; background-color:white; border:solid 0.5px rgb(230,230,230);border-bottom:unset" value="{{ user.username }}"  disabled>
+                            <textarea class="form-control col-sm-10" name="comment" id="comment" rows="2" style="border:solid 0.5px rgb(230,230,230); border-top:unset" required></textarea>
+                            <button class="btn btn-sm btn-dark submit m-1 mt-4 col" type="submit" style="border-radius: 20px;">comment</button>
+                        </div>
+            </div>
+            </div>
+            
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+{% block js %} <script src="{% static 'home/js/post_details.js' %}"></script> {% endblock %}

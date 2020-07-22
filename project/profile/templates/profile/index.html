@@ -1,0 +1,106 @@
+
+{% extends 'profile/base.html' %}
+{% load static %}
+
+
+{% block title %}  {{title}} {% endblock %}
+{% block style1 %}
+<style>
+    .image{
+      height: 150px;
+      width: 150px;
+      border-radius: 50%;
+    }
+    .text {
+        color: #fff;
+        font-size: 18px;
+        text-shadow: 2px 2px 2px #000;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+    }
+    .hover{
+        border-radius: 50%;
+        border: solid 2px rgba(0,0,0,0.5);
+        position: absolute;
+        top: 0;
+        height: 150px;
+        width: 150px;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: rgba(0,0,0,0.5);
+    }
+    .image1{
+        margin: auto;
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+    }
+    .image:hover .hover{
+        opacity: 1;
+    }
+    .image-upload > input{
+        visibility: hidden;
+        width:0;
+        height:0;
+    }
+    .username_taken{
+        text-decoration: underline;
+    }
+    .error{
+        margin-top: 9px;
+        color: rgb(78, 30, 30);
+    }
+</style>
+
+{% endblock %}
+
+{% block body %} 
+<div class="container mt-4 col-sm-5" style="margin-bottom: 8rem;">
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data" class="form0">
+
+{% csrf_token %}
+
+{% for field in form %}
+{% if field.html_name == 'picture' %}
+<label class="image" for="id_picture"><img class="image1"  src="{{ user.picture_url }}"/>
+    <div class=" hover"><div class=" text">Upload Image</div></div>
+</label>
+{{field}}
+{% else %}
+    <div style="margin-bottom: 40px;">
+        
+        <label style="margin: unset;">{{ field.label_tag }}</label>
+
+        {{ field }}
+
+    {% for error in field.errors %}
+            <p claass='error'>{{ error }}</p>
+    {% endfor %}
+
+    <p class='error' id='{{ field.html_name }}'></p>
+
+    </div>
+{% endif %}
+{% endfor %}
+<button class="btn btn-sm text-white  submit" style="background-color: rgb(139,0,139) ;">Change</button>
+</form>
+<hr>
+{% if email_not_confirmed  %}
+    <p>{{ email_not_confirmed }} <a href="{% url 'resend_email' %}">Resend email confirmation link?</a></p>
+{% endif %}
+<a href="{% url 'account_settings' %}">Settings</a>
+</div>
+
+{% endblock %}
+
+{% block js %} 
+<script src="{% static 'profile/js/index.js' %}"></script>
+{% endblock %}

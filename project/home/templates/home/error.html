@@ -1,0 +1,15 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block style %}{% endblock %}
+
+
+{% block body %}
+<div style="width: 50%; margin-top:5rem" class="container">
+<h3 style="color: rgb(200,50,50);">Error:</h3>
+<hr>
+<p class="text-white">{{ message }}</p>
+    
+</div>
+{% endblock %}

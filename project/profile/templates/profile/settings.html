@@ -1,0 +1,57 @@
+{% extends 'profile/base.html' %}
+{% load static %}
+
+
+{% block title %}  {{title}} {% endblock %}
+
+{% block style1 %}
+<style>
+    .profile-image{
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container" style="margin-top: 7rem; margin-bottom: 7rem; width:90%">
+        <div class="row">
+            <div class="col-sm-7 m-auto">
+        {% if email_not_confirmed  %}
+            <p>{{ email_not_confirmed }} <a href="{% url 'resend_email' %}">resend email confirmation link?</a></p>
+        <hr>
+        {% endif %}
+        <div>
+            <div class="text-center">
+            <a style="text-decoration: unset;" href="{% url 'index' %}">
+                <img class="profile-image" src="{{ user_profile.picture_url }}" alt="profile picture">
+            </a>
+            </div>
+            <small><p class="mt-1 text-center"><a href="{% url 'index' %}">Edit profile</a></p></small>
+        </div>
+        <h5>{{ user_profile.user.get_full_name }}</h5>
+        <p class="text-muted">{{ user_profile.username }}</p>
+        <hr>
+        <p><a style="color:black" href="{% url 'followers' %}">Followers</a><span class="float-right">{{ user_profile.followers.count }}</span> </p>
+        <hr>
+        <p><a style="color:black" href="{% url 'following' %}">Following</a><span class="float-right">{{ user_profile.following.count }}</span> </p>
+        <hr>
+        <p><a style="color:black" href="{% url 'likes' %}">Likes</a><span class="float-right">{{ user_profile.likes.count }}</span> </p>
+        <hr>
+        <p><a style="color:black" href="{% url 'blocked' %}">Blocked Users</a><span class="float-right">{{ user_profile.blocking.count }}</span> </p>
+        <hr>
+        <p>{{ user_profile.user.email }} <a style="float: right;" href="{% url 'change_email' %}">change</a></p>
+        <hr>
+        <p><a style="color:black" href="{% url 'reset_password_confirm' %}">Change My Password</a></p>
+        <hr>
+        <div style="margin-top: 3rem">
+        <a  style="text-decoration: none; display:block ;color:red" class="mb-4" href="{% url 'confirm_deactivate' %}">Deactivate my account</a>
+        <a style="text-decoration: none; display:block; color:red" class="mb-4"  href="{% url 'confirm_del' %}">Delete my account</a>
+        </div>
+        </div>
+    </div>
+</div>
+{% block js %}{% endblock %}
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'profile/base.html' %}
+{% load static %}
+
+
+{% block title %}  {{title}} {% endblock %}
+{% block style1 %}{% endblock %}
+
+{% block body %}
+<div class="container">
+<div class="row" style="margin-top: 7rem;">
+    <div class="col-md-5 m-auto">
+        {% if message %}
+            <p class="mb-4 text-danger text-center">{{ message }}</p>
+        {% endif %}
+        <h4 class="mb-4">Enter Your Password</h4>
+
+        <p style="color: rgb(78, 30, 30);">{{ user.email }}</p>
+        
+        <form method="POST" action="{% if confirm_deactivate %}{% url 'confirm_deactivate' %}{% else %}{% url 'confirm_del' %}{% endif %}">
+            {% csrf_token %}
+            <input class="form-control" placeholder="Password" type="password" id="id_password" name="password">
+            <button class="btn btn-sm btn-danger text-white mt-4 float-right" type="submit">
+                {% if confirm_deactivate %}
+                Deactivate
+                {% else %}
+                Delete
+                {% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+</div>
+
+
+{% block js %}{% endblock %}
+{% endblock %}

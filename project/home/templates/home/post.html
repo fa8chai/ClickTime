@@ -1,0 +1,112 @@
+{% extends 'profile/base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+
+{% block style1 %}
+<style>
+    .image{
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+
+        
+    }
+    
+    .hover{
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        background-color: rgba(50,50,50);
+        color: white;
+        text-shadow: 2px 2px 4px #000000;
+        font-size: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        
+    }
+    .image:hover .hover{
+        background-color: rgb(30,30,30);
+    }
+    .image-upload > input{
+        visibility: hidden;
+        width:0;
+        height:0;
+    }
+    .container{
+        margin-top: 3rem;
+        margin-bottom: 20rem;
+    }
+    .image1{
+        max-width:100%;
+        max-height:100%;
+        border-radius: 2%;
+        margin:8px;
+    }
+    .image-container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem;
+    }
+    .btn-submit{
+        border: solid 1px rgb(139,0,139);
+        width: 30%;
+        margin: auto;
+        margin-bottom: 6rem;
+        margin-top: 2rem;
+    }
+    .btn-submit:hover{
+        background-color: rgb(139,0,139);
+        color: white;
+    }
+    .post-text{
+        display: none;
+        width: 50%;
+        margin: auto;
+    }
+</style>
+
+
+
+{% endblock %}
+
+{% block body %}
+<div class="container">
+<h4>New Post</h4>
+{% if email_not_confirmed %}
+<p class="mb-4 mt-4 text-danger">{{ email_not_confirmed }} <a href="{% url 'resend_email' %}">Resend email confirmation link?</a></p>
+{% elif error %}
+<p class="mb-4 mt-4 text-danger">{{ error }}</p>
+{% endif %}
+
+
+    <form method="POST" enctype="multipart/form-data">
+                 {% csrf_token %}
+    
+    <div>
+        <label class="image" for="id_image"><div class="hover"><i class="far fa-images fa-3x"></i></div></label>
+        <span class="image-upload"><input id="id_image" type="file" name="images" multiple></span>
+    </div>
+    {% for field in postForm %}
+        <div style="margin-bottom: 40px;">    
+            {{ field }}
+
+        {% for error in field.errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+
+    </div>
+    
+    {% endfor %}
+        <button class="btn btn-dark btn-sm btn-edit " type="button">Edit</button>
+        <div class="image-container"></div>
+        <button class="btn btn-sm btn-block btn-submit" type="submit">Post</button>
+    </form>
+</div>
+{% block js %} <script src="{% static 'home/js/post.js' %}"></script> {% endblock %}
+{% endblock %}

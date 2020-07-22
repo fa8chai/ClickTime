@@ -1,0 +1,114 @@
+{% extends 'profile/base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+
+{% block style1 %}
+<style>
+    img{
+        width: 250px;
+        height: 250px;
+    }
+    .about{
+        margin-top: 3rem;
+    }
+    .posts{
+        padding-top: 20px;
+        margin-top: 20px;
+        border-top: solid 0.8px rgb(175, 175, 175);
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: start;
+    }
+    @media only screen and (max-width: 992px) {
+        .posts{
+            justify-content: center;
+        }
+    }
+   
+    .profile-image{
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        
+    }
+    
+
+    .post_images{
+        margin:10px;
+        margin-bottom: 20px;
+        transition: 0.2s ease;
+        width: 250px ;
+        height: 250px;
+        
+    }
+    .post_images:hover{
+        -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        transform: scale(1.1);
+        transition: 0.2s ease;
+    }
+  
+</style>
+
+{% endblock %}
+
+{% block body %}
+<div class="container p-4" style="margin-bottom: 20rem;" >
+
+    <div class="about row">    
+        <a style="text-decoration: unset;" href="{% url 'get_user' user.username %}">
+                <img class="profile-image" src="{{ user.picture_url }}" alt="profile picture">
+        </a>
+        <div class="col-sm-5" style="margin-top: auto; margin-bottom:auto;">
+            {% if email_not_confirmed %}<small class="text-danger">{{ email_not_confirmed }}</small>{% endif %}
+            <a href="{% url 'get_user' user.username %}" style="color: black; text-decoration:none">
+                <h5 class="username">{{ user.username }}</h5>
+            </a>
+            <p>{{ user.bio }}</p>
+            <small class="font-italic text-muted">Joiend {{ user.user.date_joined|date:'F Y' }}</small>
+        </div>
+        <div class="mt-auto mb-auto">
+            {% if following %}
+                <button class="btn btn-sm m-2 fo unfollow" style="border:solid 0.5px black">Unfollow</button>
+            {% elif not_following %}
+                <button class="btn btn-sm m-2 fo follow" style="border:solid 0.5px black">Follow</button>
+            {% endif %}
+
+            {% if blocked %}
+                <button class="btn btn-sm unblock b-btn m-2" style="border:solid 0.5px black">Unblock</button>
+            {% elif not_blocked %}
+                <button class="btn btn-sm block b-btn m-2" style="border:solid 0.5px black">Block</button>
+            {% endif %}
+            </div>
+    </div>
+
+
+    
+
+
+    <div class="posts">
+    {% if message %}
+        <p class="m-auto">{{ message }}</p>
+    {% else %}
+        {% for post in posts %}
+                
+                <a href="{% url 'view_post' user.username post.id  %}" >
+                    <div class="post_images">
+                        
+                        {% if post.images.count > 1 %}
+                        <div style="background-color:rgba(0,0,0,0.5); color:white; position:relative;top:25px; right:0px ; float:right; "><i class="far fa-images"> {{ post.images.count }}</i></div>   
+                        <img src="{{ post.images.first.image.url }}" alt="{{ post.text }}">
+                        {% else %}
+                        <div style="background-color:rgba(0,0,0,0.8); color:white ; position:relative;top:25px; right:0px ; float:right; visibility: hidden; "><i class="far fa-images"></i></div>   
+                        <img src="{{ post.images.last.image.url }}" alt="{{ post.text }}">
+                        {% endif %}
+                    </div>
+                </a>
+                
+        {% endfor %}
+    {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block js %} <script src="{% static 'home/js/main.js' %}"></script> {% endblock %}

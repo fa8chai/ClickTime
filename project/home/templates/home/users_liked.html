@@ -1,0 +1,49 @@
+{% extends 'profile/base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+
+{% block style1 %}
+<style>
+    .profile-img{
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+    }
+    a{
+        color:black;
+    }
+    a:hover{
+        color:black;
+    }
+    .user{
+        margin-bottom: 1.5rem;
+    }
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container col-sm-6" style="margin-top: 7rem;">
+    {% if users %}
+        {% for like in users %}
+            <div class="user">
+                <a href="{% url 'get_user' like.user.username %}" class='row'>
+                    <img class="profile-img" src="{{ like.user.picture_url }}" alt="profile image">
+                    <div class="mt-auto mb-auto ml-2">
+                        {% if like.user.username == user.profile.username %}
+                        <h6>You</h6>
+                        {% else %}
+                        <h6>{{ like.user.username }}</h6>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+            <hr>
+        {% endfor %}
+        {% else %}
+            <p class="text-muted">No likes!</p>
+        {% endif %}
+
+</div>
+
+{% endblock %}

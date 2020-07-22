@@ -1,0 +1,93 @@
+{% extends 'profile/base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+
+{% block style1 %}
+<style>
+    .profile-img{
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+    }
+    .post{
+        width: 250px;
+        height: auto;
+        margin:auto;
+        margin-bottom: 9rem;
+    }
+    .post-img{
+        width: 250px;
+        height: auto;
+    }
+    .post-img > img{
+        max-width: 100%;
+        max-height: 100%;
+    }
+    a{
+        text-decoration: none;
+        color:black;
+    }
+    a:hover{
+        color: black;
+        text-decoration: none;
+    }
+    .usera:hover{
+        text-decoration: underline;
+    }
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div style="margin-top: 7rem;">
+    {% if likes %}
+    <div class="posts">
+    {% for like in likes %}
+        <div class="post">
+            <div class="row mb-1 ml-3 mt-2">
+            <a href="{% url 'get_user' like.post.user.username %}">
+                <img class="profile-img" src="{{ like.post.user.picture_url }}" alt="profile image">
+            </a>
+            <a href="{% url 'get_user' like.post.user.username %}" class="mt-auto mb-auto ml-2 usera">
+                        {% if like.post.user.username == user.username %}
+                        <h6>You</h6>
+                        {% else %}
+                        <h6>{{ like.post.user.username }}</h6>
+                        {% endif %}            </a>
+            </div>
+
+            <a href="{% url 'view_post' like.post.user.username like.post.id  %}" >
+            <div class="post-img">                    
+            {% if like.post.images.count > 1 %}
+                <div style="background-color:rgba(0,0,0,0.8); color:white ; position:relative;top:25px; right:0px ; float:right; "><i class="far fa-images"> {{ like.post.images.count }}</i></div>   
+                <img src="{{ like.post.images.first.image.url }}" alt="{{ like.post.text }}">
+                <p class="ml-2 mt-2">
+                    {{ like.post.text|slice:":20" }}
+                {% if like.post.text|length > 20 %}
+                <a href="{% url 'view_post' like.post.user.username like.post.id %}" style="text-decoration: none;" class="text-dark"> ...more</a>    
+                {% endif %}
+                </p>
+            {% else %}
+                <div style="background-color:rgba(0,0,0,0.8); color:white ; position:relative;top:25px; right:0px ; float:right; visibility: hidden; "><i class="far fa-images"></i></div>   
+                 <img src="{{ like.post.images.last.image.url }}" alt="{{ like.post.text }}">
+                <p class="ml-2 mt-2">
+                    {{ like.post.text|slice:":20" }}
+                    {% if like.post.text|length > 20 %}
+                    <a href="{% url 'view_post' like.post.user.username like.post.id %}" style="text-decoration: none;" class="text-dark"> ...more</a>    
+                    {% endif %}
+                </p>
+            {% endif %}
+            </div>
+            </a>
+            </div>
+        </div>
+        <hr style="width: 50%; margin:auto" class="mb-4">
+    {% endfor %}
+    </div>
+    {% else %}
+            <p class="text-muted">Nothing found!</p>
+    {% endif %}
+    </div>
+
+{% endblock %}
