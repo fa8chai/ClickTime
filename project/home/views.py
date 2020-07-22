@@ -17,7 +17,7 @@ from notifications.signals import notify
 
 @login_required
 def main(request):
-
+    print('Hello')
     user_profile = Profile.objects.get(user = request.user)
     posts = user_profile.posts.all().order_by('-created_on')
     context={
