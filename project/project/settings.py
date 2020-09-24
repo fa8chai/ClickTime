@@ -151,8 +151,8 @@ CHANNEL_LAYERS = {
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'anne.wi.sw@gmail.com'
-EMAIL_HOST_PASSWORD = 'veer.zaara'
+EMAIL_HOST_USER = 'clicktimeteam@gmail.com'
+EMAIL_HOST_PASSWORD = 'test88clicktime'
 EMAIL_PORT = 587
 
 DJANGO_NOTIFICATIONS_CONFIG = { 'SOFT_DELETE': True}
